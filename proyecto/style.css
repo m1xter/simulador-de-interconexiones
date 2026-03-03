@@ -1,0 +1,206 @@
+/* ==========================================
+   1. VARIABLES Y CONFIGURACIÓN BASE
+   ========================================== */
+:root {
+    --bg-dark: #0b0e14;
+    --panel-bg: rgba(20, 25, 35, 0.8);
+    --neon-blue: #00f2ff;
+    --neon-purple: #bc00ff;
+    --neon-yellow: #ffde00;
+    --text-color: #e2e8f0;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    overflow: hidden;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+header h1 {
+    text-align: center;
+    letter-spacing: 3px;
+    color: var(--neon-blue);
+    text-shadow: 0 0 10px var(--neon-blue);
+}
+
+/* ==========================================
+   2. DASHBOARD Y PANELES
+   ========================================== */
+.dashboard {
+    display: grid;
+    grid-template-columns: 250px 1fr 250px;
+    gap: 20px;
+    flex-grow: 1;
+    min-height: 0; 
+}
+
+.panel {
+    background: var(--panel-bg);
+    border: 1px solid #334155;
+    border-radius: 15px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.panel h2 {
+    font-size: 1.2rem;
+    border-bottom: 1px solid #444;
+    padding-bottom: 10px;
+}
+
+.btn {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+    margin-bottom: 5px;
+}
+
+.btn-blue { background: #1e293b; border: 1px solid var(--neon-blue); color: var(--neon-blue); }
+.btn-blue:hover { background: var(--neon-blue); color: #000; }
+.btn-purple { background: transparent; border: 1px solid var(--neon-purple); color: var(--neon-purple); }
+.btn-outline { background: transparent; border: 1px solid gray; color: gray; }
+
+/* ==========================================
+   3. VIEWPORT Y BUS VISUAL (LÓGICA DE FLUJO)
+   ========================================== */
+.viewport {
+    position: relative;
+    background: radial-gradient(circle, #1a202c 0%, #0b0e14 100%);
+    border: 1px solid var(--neon-blue);
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+/* Capa para las líneas de interconexión */
+.bus-lines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Estilo de la línea de datos cuando está activa */
+.bus-path {
+    fill: none;
+    stroke: var(--neon-blue);
+    stroke-width: 3;
+    filter: drop-shadow(0 0 8px var(--neon-blue));
+    stroke-dasharray: 10;
+    animation: flow 0.5s linear infinite;
+    transition: opacity 0.3s ease;
+}
+
+@keyframes flow {
+    from { stroke-dashoffset: 20; }
+    to { stroke-dashoffset: 0; }
+}
+
+/* ==========================================
+   4. NODOS DE HARDWARE
+   ========================================== */
+.node-grid {
+    position: relative;
+    z-index: 2;
+    display: grid; /* Cambiamos a flex para distribuir mejor los 3 elementos */
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+    padding: 0 20px;
+}
+
+.node {
+    width: 130px;
+    height: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: 15px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    background: rgba(11, 14, 20, 0.9);
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Colores actualizados para la triada */
+.node-cpu { grid-column: 2;grid-row:1 ;  border: 3px solid var(--neon-purple); color: var(--neon-purple); }
+.node-ram { grid-column: 1;grid-row:2 ;border: 3px solid var(--neon-blue); color: var(--neon-blue); }
+.node-ssd { grid-column: 3;grid-row:2 ;border: 3px solid var(--neon-yellow); color: var(--neon-yellow); }
+
+/* ==========================================
+   5. RENDIMIENTO Y COLA
+   ========================================== */
+.status-ready { color: #4ade80; font-weight: bold; }
+.status-busy { color: #f87171; font-weight: bold; }
+
+select, input[type="range"] {
+    width: 100%;
+    background: #1e293b;
+    color: white;
+    border: 1px solid #444;
+    padding: 5px;
+}
+
+.queue-container {
+    margin-top: 15px;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+    padding: 15px;
+    border: 1px solid var(--neon-blue);
+    
+    /* ESTO ES LO QUE TENÍAS ANTES */
+    flex-grow: 1; 
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Esto corta lo que sobra */
+    margin-bottom: 10px; 
+    height: 0; /* TRUCO: Fuerza al contenedor a no estirarse y usar el espacio de flex */
+}
+
+#process-list {
+    flex-grow: 1;
+    overflow-y: auto; /* ESTO ACTIVA EL SCROLL */
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.process-item {
+    background: rgba(30, 41, 59, 0.7);
+    border-left: 4px solid var(--neon-purple);
+    margin-bottom: 8px;
+    padding: 12px;
+    font-size: 0.85rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.process-item.active {
+    border-left-color: var(--neon-blue);
+    background: rgba(45, 55, 72, 0.9);
+    box-shadow: 0 0 10px rgba(0, 242, 255, 0.2);
+}
+
+/* Personalización del scroll */
+#process-list::-webkit-scrollbar { width: 5px; }
+#process-list::-webkit-scrollbar-thumb { background: var(--neon-blue); border-radius: 10px; }

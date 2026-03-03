@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Simulador de Interconexión</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="main-container">
+        <header>
+            <h1>SIMULADOR DE INTERCONEXIÓN</h1>
+        </header>
+
+        <div class="dashboard">
+            <aside class="panel config-panel">
+                <h2>Configuración</h2>
+                
+                <div class="control-group">
+                    <label>Ancho de Bus:</label>
+                    <select id="bus-width-select">
+                        <option value="32">32-bit</option>
+                        <option value="64" selected>64-bit</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label>Operaciones de Bus:</label>
+                    <button class="btn btn-blue" onclick="agregarACola(hardware.ram, hardware.cpu, 256)">LEER (RAM -> CPU)</button>
+                    <button class="btn btn-blue" onclick="agregarACola(hardware.cpu, hardware.ram, 256)">ESCRIBIR (CPU -> RAM)</button>
+                    <button class="btn btn-blue" onclick="agregarACola(hardware.ssd, hardware.ram, 512)">TRANSFERENCIA E/S</button>
+                </div>
+
+                <button class="btn btn-purple">PAUSAR</button>
+                <button class="btn btn-outline">? VER MANUAL</button>
+            </aside>
+
+            <section class="viewport">
+                <div class="bus-lines">   
+                </div>
+                <div class="node-grid">
+                    <div id="CPU" class="node node-cpu">CPU</div>
+                    <div id="SSD" class="node node-ssd">E/S (SSD)</div>
+                    <div id="RAM" class="node node-ram">RAM</div>
+                </div>
+            </section>
+
+<aside class="panel stats-panel">
+    <div class="control-group">
+        <label>Latencia de Ciclo (Base)</label>
+        <input type="range" id="latencia-slider" min="10" max="200" value="30">
+        <p><span id="latencia-val">30</span>ms</p>
+    </div>
+
+    <div class="status" style="margin-bottom: 15px; border-top: 1px solid #444; padding-top: 10px;">
+        <div style="font-size: 0.85rem; opacity: 0.8;">Latencia de Impacto:</div>
+        <div style="font-size: 1.2rem; font-weight: bold; color: var(--neon-yellow);">
+            <span id="real-latency">0</span> ms
+        </div>
+    </div>
+
+    <div class="status">
+        Estado del Bus: <span id="bus-status-text" class="status-ready">LISTO</span>
+    </div>
+
+    <div class="queue-container">
+        <h3>COLA DE PROCESOS</h3>
+        <ul id="process-list"></ul>
+    </div>
+</aside>
+        </div>
+    </div>
+
+    <script src="render.js"></script>
+    <script>
+        // Pequeño helper para leer el slider en tiempo real
+        const slider = document.getElementById('latencia-slider');
+        const valText = document.getElementById('latencia-val');
+        slider.oninput = function() { valText.innerText = this.value; }
+        function getLatencia() { return parseInt(slider.value); }
+    </script>
+</body>
+</html>
