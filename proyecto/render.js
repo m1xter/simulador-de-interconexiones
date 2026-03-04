@@ -43,6 +43,12 @@ class Componente {
     }
 }
 
+
+
+
+//cpu  valor actual (0ms)  latencia real (0.3 nano segundos) 
+//ram  valor actual (150ms) latencia real (150 nano segundos)
+//ssd  valor actual (400ms) latencia real (400 nano segundos)
 const hardware = {
     cpu: new Componente('CPU', 'Procesador', 0),
     ram: new Componente('RAM', 'Memoria RAM', 150),
@@ -103,6 +109,8 @@ let colaPeticiones = [];
 let procesandoCola = false;
 let contadorProcesos = 0;
 
+//en esta fucion se agrega a la cola las intrucciones seleccionadas en el dashboard izquierdo 
+//esta fucion recibe  como parametros  el origen de la instruccion , el destino de la instruccion  y el tamaño de bits de del bus
 async function agregarACola(origen, destino, tamañoBits) {
     if (colaPeticiones.length == 0) {
     contadorProcesos = 0; // Reiniciar contador si la cola estaba vacía
@@ -125,7 +133,12 @@ async function agregarACola(origen, destino, tamañoBits) {
     }
 }
 
+
+
+// en esta funcion se hace un calculo para simular el procesamiento de instrucciones 
 async function procesarSiguienteTarea() {
+
+    //validacion de que hay instrucciones en cola
     if (colaPeticiones.length === 0) {
         procesandoCola = false;
         actualizarEstadoBusUI("LISTO", "status-ready");
@@ -175,6 +188,8 @@ async function procesarSiguienteTarea() {
     colaPeticiones.shift();
     procesarSiguienteTarea();
 }
+
+
 function actualizarListaVisual() {
     const listaUI = document.getElementById('process-list');
     listaUI.innerHTML = '';
@@ -189,3 +204,16 @@ function actualizarListaVisual() {
         listaUI.appendChild(li);
     });
 }
+
+function abrirmanual() {
+    window.open('manual.html', '_blank');
+}
+
+document.addEventListener('DOMContentLoaded', function() {    
+    document.getElementById('btn-manual').addEventListener('click', abrirmanual);
+});
+
+
+
+
+

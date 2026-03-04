@@ -11,12 +11,18 @@
 }
 
 body {
-    background-color: var(--bg-dark);
+    
+    background-image: url('imagenes/ima1.jpg');
+    background-size: cover;
+    background-position: center;
+    
     color: var(--text-color);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     overflow: hidden;
 }
+
+
 
 .main-container {
     display: flex;
@@ -75,13 +81,17 @@ header h1 {
 .btn-blue:hover { background: var(--neon-blue); color: #000; }
 .btn-purple { background: transparent; border: 1px solid var(--neon-purple); color: var(--neon-purple); }
 .btn-outline { background: transparent; border: 1px solid gray; color: gray; }
+.btn-outline:hover{
+    background: var(--text-color);
+    color: black;
+}
 
 /* ==========================================
    3. VIEWPORT Y BUS VISUAL (LÓGICA DE FLUJO)
    ========================================== */
 .viewport {
     position: relative;
-    background: radial-gradient(circle, #1a202c 0%, #0b0e14 100%);
+    
     border: 1px solid var(--neon-blue);
     border-radius: 15px;
     overflow: hidden;

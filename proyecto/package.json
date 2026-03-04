@@ -11,5 +11,6 @@
   "license": "ISC",
   "dependencies": {
     "electron": "^40.6.1"
-  }
+  },
+  "keywords": []
 }
